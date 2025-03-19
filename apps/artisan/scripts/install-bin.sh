@@ -29,6 +29,9 @@ success() {
 }
 
 case $platform in
+'MINGW64_NT-10.0-26100 x86_64')
+    target=win32-x64
+    ;;
 'Darwin x86_64')
     target=darwin-x64
     ;;
@@ -61,6 +64,11 @@ install_ffmpeg () {
     info "Downloading ffmpeg from \"$ffmpeg_uri\""
 
     ffmpeg_exe=$bin_dir/ffmpeg.gz
+
+    if [ "$target" == "win32-x64" ]; then
+        ffmpeg_exe=$bin_dir/ffmpeg.exe.gz
+    fi
+
     curl --fail --location --progress-bar --output "$ffmpeg_exe" "$ffmpeg_uri" ||
         error "Failed to download ffmpeg from \"$ffmpeg_uri\""
 
@@ -75,6 +83,11 @@ install_ffprobe () {
     info "Downloading ffprob from \"$ffprobe_uri\""
 
     ffprobe_exe=$bin_dir/ffprobe.gz
+
+    if [ "$target" == "win32-x64" ]; then
+        ffprobe_exe=$bin_dir/ffprobe.exe.gz
+    fi
+    
     curl --fail --location --progress-bar --output "$ffprobe_exe" "$ffprobe_uri" ||
         error "Failed to download ffprobe from \"$ffprobe_uri\""
 
@@ -89,6 +102,8 @@ install_packager () {
         packager_target=osx-x64
     elif [ "$packager_target" == "darwin-arm64" ]; then
         packager_target=osx-arm64
+    elif [ "$packager_target" == "win32-x64" ]; then
+        packager_target="win-x64.exe"
     fi
 
     packager_uri=https://github.com/shaka-project/shaka-packager/releases/download/v3.2.0/packager-$packager_target
