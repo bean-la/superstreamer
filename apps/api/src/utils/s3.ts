@@ -4,14 +4,14 @@ import { env } from "../env";
 
 export type StorageFolderItem =
   | {
-      type: "file";
-      path: string;
-      size: number;
-    }
+    type: "file";
+    path: string;
+    size: number;
+  }
   | {
-      type: "folder";
-      path: string;
-    };
+    type: "folder";
+    path: string;
+  };
 
 export interface StorageFolder {
   cursor?: string;
@@ -25,6 +25,7 @@ const client = new S3({
     accessKeyId: env.S3_ACCESS_KEY,
     secretAccessKey: env.S3_SECRET_KEY,
   },
+  forcePathStyle: true,
 });
 
 export async function getStorageFolder(

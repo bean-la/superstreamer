@@ -29,7 +29,7 @@ success() {
 }
 
 case $platform in
-'MINGW64_NT-10.0-26100 x86_64')
+'MINGW64_NT-10.0-19045 x86_64')
     target=win32-x64
     ;;
 'Darwin x86_64')
@@ -110,7 +110,12 @@ install_packager () {
 
     info "Downloading packager from \"$packager_uri\""
 
-    packager_exe=$bin_dir/packager
+    if [ "$target" == "win32-x64" ]; then
+        packager_exe=$bin_dir/packager.exe
+    else
+        packager_exe=$bin_dir/packager
+    fi
+
     curl --fail --location --progress-bar --output "$packager_exe" "$packager_uri" ||
         error "Failed to download packager from \"$packager_uri\""
 

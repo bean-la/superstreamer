@@ -3,6 +3,10 @@ import type { PartialInput, Stream } from "bolt";
 import { getS3SignedUrl } from "./s3";
 
 export async function getBinaryPath(name: string) {
+  if (process.platform === "win32") {
+    name = `${name}.exe`;
+  }
+
   const direct = `${process.cwd()}/bin/${name}`;
   const directExists = await Bun.file(direct).exists();
   if (directExists) {

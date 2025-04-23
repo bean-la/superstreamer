@@ -26,6 +26,7 @@ const client = new S3({
     accessKeyId: env.S3_ACCESS_KEY,
     secretAccessKey: env.S3_SECRET_KEY,
   },
+  forcePathStyle: true,
   retryStrategy,
 });
 
@@ -119,12 +120,17 @@ export async function s3UploadFolder(
   const files: string[] = [];
   for await (const file of glob.scan(localPath)) {
     files.push(file);
+    console.log(`Uploading ${file} to ${remotePath}/${file}`);
   }
 
   for (const file of files) {
-    await s3UploadFile(`${localPath}/${file}`, `${remotePath}/${file}`, {
-      public: options.public,
-    });
+    await s3UploadFile(
+      join(localPath, file),
+      [remotePath, file.replaceAll("\\", "/")].join("/"),
+      {
+        public: options.public,
+      },
+    );
   }
 }
 
