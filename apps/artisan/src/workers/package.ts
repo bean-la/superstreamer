@@ -11,6 +11,7 @@ import type {
   WorkerDir,
 } from "bolt";
 import type { Job } from "bullmq";
+import { join } from "node:path";
 
 const packagerBin = await getBinaryPath("packager");
 
@@ -80,7 +81,7 @@ async function handleStepInitial(job: Job<PackageData>, dir: WorkerDir) {
 
     if (stream.type === "video") {
       packagerParams.push([
-        `in=${inDir}/${key}`,
+        `in=${join(inDir, key)}`,
         "stream=video",
         `init_segment=${file.name}/init.mp4`,
         `segment_template=${file.name}/$Number$.m4s`,
@@ -91,7 +92,7 @@ async function handleStepInitial(job: Job<PackageData>, dir: WorkerDir) {
 
     if (stream.type === "audio") {
       const params = [
-        `in=${inDir}/${key}`,
+        `in=${join(inDir, key)}`,
         "stream=audio",
         `init_segment=${file.name}/init.mp4`,
         `segment_template=${file.name}/$Number$.m4a`,
@@ -111,7 +112,7 @@ async function handleStepInitial(job: Job<PackageData>, dir: WorkerDir) {
 
     if (stream.type === "text") {
       packagerParams.push([
-        `in=${inDir}/${key}`,
+        `in=${join(inDir, key)}`,
         "stream=text",
         `segment_template=${file.name}/$Number$.vtt`,
         `playlist_name=${file.name}/playlist.m3u8`,
@@ -146,7 +147,7 @@ async function handleStepInitial(job: Job<PackageData>, dir: WorkerDir) {
   });
 
   const s3Dir = `package/${job.data.assetId}/${job.data.name}`;
-  job.log(`Uploading to ${s3Dir}`);
+  job.log(`Uploading from ${outDir} to ${s3Dir}`);
 
   await s3UploadFolder(outDir, s3Dir, {
     public: job.data.public,

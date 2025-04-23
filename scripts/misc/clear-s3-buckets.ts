@@ -21,6 +21,7 @@ const client = new S3({
     accessKeyId: Bun.env.S3_ACCESS_KEY,
     secretAccessKey: Bun.env.S3_SECRET_KEY,
   },
+  forcePathStyle: true,
 });
 
 async function clearFolder(prefix: string) {
