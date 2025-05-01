@@ -53,11 +53,12 @@ export function joinUrl(urlFile: string, filePath: string) {
   if (filePath.startsWith("http://") || filePath.startsWith("https://")) {
     return filePath;
   }
+
   const urlBase = urlFile.substring(0, urlFile.lastIndexOf("/"));
 
   const url = new URL(urlBase);
 
-  return `${url.protocol}//${url.host}${path.join(url.pathname, filePath)}`;
+  return `${url.protocol}//${url.host}${url.pathname}/${filePath}`;
 }
 
 export function createUrl(
