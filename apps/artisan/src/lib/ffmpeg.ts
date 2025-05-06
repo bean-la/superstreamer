@@ -17,9 +17,12 @@ export async function ffprobe(input: string) {
   });
 }
 
-const ffmpegBin = await getBinaryPath("ffmpeg");
+// const ffmpegBin = await getBinaryPath("ffmpeg");
 
-fluent.setFfmpegPath(ffmpegBin);
+// fluent.setFfmpegPath(ffmpegBin);
+fluent.setFfmpegPath(
+  `C:\\nvidia\\media-autobuild_suite\\local64\\bin-video\\ffmpeg.exe`,
+);
 
 export async function ffmpeg(
   input: string,
@@ -30,6 +33,9 @@ export async function ffmpeg(
 ) {
   return await new Promise((resolve, reject) => {
     fluent(input)
+      .inputOptions("-hwaccel cuda")
+      .inputOptions("-hwaccel_output_format cuda")
+      .inputOptions("-resize 1280x720")
       .outputOptions(params)
       .on("start", onStart)
       .on("progress", (event) => {

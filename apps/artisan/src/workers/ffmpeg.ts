@@ -76,37 +76,38 @@ function getVideoOutputOptions(
   const args: string[] = [
     "-f mp4",
     "-an",
-    `-c:v ${stream.codec}`,
+    // `-c:v ${stream.codec}`,
+    `-c:v h264_nvenc`,
     `-b:v ${stream.bitrate}`,
     `-r ${stream.framerate}`,
     "-movflags +frag_keyframe",
     `-frag_duration ${segmentSize * 1_000_000}`,
-    `-keyint_min ${keyFrameRate}`,
-    `-g ${keyFrameRate}`,
+    // `-keyint_min ${keyFrameRate}`,
+    // `-g ${keyFrameRate}`,
   ];
 
-  if (stream.codec === "h264") {
-    let profile = "main";
-    if (stream.height >= 720) {
-      profile = "high";
-    }
-    args.push(`-profile:v ${profile}`);
-  }
+  // if (stream.codec === "h264") {
+  //   let profile = "main";
+  //   if (stream.height >= 720) {
+  //     profile = "high";
+  //   }
+  //   args.push(`-profile:v ${profile}`);
+  // }
 
-  if (stream.codec === "h264" || stream.codec === "hevc") {
-    args.push(
-      "-preset slow",
-      "-flags +loop",
-      "-pix_fmt yuv420p",
-      "-flags +cgop",
-    );
-  }
+  // if (stream.codec === "h264" || stream.codec === "hevc") {
+  //   args.push(
+  //     "-preset slow",
+  //     "-flags +loop",
+  //     "-pix_fmt yuv420p",
+  //     "-flags +cgop",
+  //   );
+  // }
 
-  const filters: string[] = ["setsar=1:1", `scale=-2:${stream.height}`];
+  // const filters: string[] = ["setsar=1:1", `scale=-2:${stream.height}`];
 
-  if (filters.length) {
-    args.push(`-vf ${filters.join(",")}`);
-  }
+  // if (filters.length) {
+  //   args.push(`-vf ${filters.join(",")}`);
+  // }
 
   return args;
 }
