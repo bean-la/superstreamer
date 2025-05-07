@@ -23,6 +23,9 @@ export function runWorkers(
     const worker = new Worker(name, processor, {
       connection,
       autorun: false,
+      lockDuration: 1000 * 60 * 5, // 5 minutes
+      lockRenewTime: 1000 * 60 * 2, // 2 minutes
+      // stalledInterval: 0,
     });
 
     worker.on("error", (failedReason) => {

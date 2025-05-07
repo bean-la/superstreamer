@@ -80,7 +80,7 @@ async function handleStepInitial(job: Job<PackageData>, dir: WorkerDir) {
 
     if (stream.type === "video") {
       packagerParams.push([
-        `in=${join(inDir, key)}`,
+        `in=${inDir}/${key}`,
         "stream=video",
         `init_segment=${file.name}/init.mp4`,
         `segment_template=${file.name}/$Number$.m4s`,
@@ -91,7 +91,7 @@ async function handleStepInitial(job: Job<PackageData>, dir: WorkerDir) {
 
     if (stream.type === "audio") {
       const params = [
-        `in=${join(inDir, key)}`,
+        `in=${inDir}/${key}`,
         "stream=audio",
         `init_segment=${file.name}/init.mp4`,
         `segment_template=${file.name}/$Number$.m4a`,
@@ -111,7 +111,7 @@ async function handleStepInitial(job: Job<PackageData>, dir: WorkerDir) {
 
     if (stream.type === "text") {
       packagerParams.push([
-        `in=${join(inDir, key)}`,
+        `in=${inDir}/${key}`,
         "stream=text",
         `segment_template=${file.name}/$Number$.vtt`,
         `playlist_name=${file.name}/playlist.m3u8`,

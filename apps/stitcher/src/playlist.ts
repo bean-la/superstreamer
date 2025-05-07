@@ -1,4 +1,4 @@
-import type { DateTime } from "luxon";
+import { DateTime } from "luxon";
 import type { AppContext } from "./app-context";
 import { assert } from "./assert";
 import { filterMasterPlaylist, formatFilterToQueryParam } from "./filters";
@@ -49,7 +49,7 @@ export async function formatMediaPlaylist(
   assert(firstSegment);
 
   if (media.endlist) {
-    firstSegment.programDateTime = session.startTime;
+    firstSegment.programDateTime = DateTime.fromISO(session.startTime);
   }
 
   // Apply dateRanges to each video playlist.
@@ -214,6 +214,7 @@ export function rewriteSpliceInfoSegments(media: MediaPlaylist) {
 async function initSessionOnMasterReq(context: AppContext, session: Session) {
   let storeSession = false;
 
+  const startTime = DateTime.fromISO(session.startTime);
   // If we have a vmap config but no result yet, we'll resolve it.
   if (session.vmap && !session.vmap.result) {
     const vmapUrl = replaceUrlParams(session.vmap.url);
@@ -224,7 +225,7 @@ async function initSessionOnMasterReq(context: AppContext, session: Session) {
     session.vmap.result = {};
 
     for (const adBreak of vmap.adBreaks) {
-      const timedEvent = mapAdBreakToTimedEvent(session.startTime, adBreak);
+      const timedEvent = mapAdBreakToTimedEvent(startTime, adBreak);
       if (timedEvent) {
         pushTimedEvent(session.timedEvents, timedEvent);
       }

@@ -1,4 +1,3 @@
-import * as path from "node:path";
 import type { AppContext } from "../app-context";
 
 const uuidRegex = /^[a-z,0-9,-]{36,36}$/;

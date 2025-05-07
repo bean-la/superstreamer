@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 import * as uuid from "uuid";
 import type { AppContext } from "./app-context";
 import { apiError } from "./errors";
-import { SuperJSON } from "./lib/json";
+// import { SuperJSON } from "./lib/json";
 import { resolveUri } from "./lib/url";
 import { fetchDuration, pushTimedEvent } from "./playlist";
 import type { TimedEvent } from "./types";
@@ -12,7 +12,7 @@ export interface Session {
   url: string;
   expiry: number;
 
-  startTime: DateTime;
+  startTime: string;
 
   vmap?: {
     url: string;
@@ -92,10 +92,13 @@ export async function getSession(context: AppContext, id: string) {
     throw apiError("ERR_SESSION_NOT_FOUND");
   }
 
-  const session = SuperJSON.parse<Session>(data);
+  console.log("data", data);
 
+  const session = JSON.parse(data) as Session;
+  const startTime = DateTime.fromISO(session.startTime);
+  console.log("session", session);
   // Check if the session is expired, we might still have it in kv.
-  const expiryDate = session.startTime.plus({ seconds: session.expiry });
+  const expiryDate = startTime.plus({ seconds: session.expiry });
   if (DateTime.now() > expiryDate) {
     throw apiError("ERR_SESSION_NOT_FOUND");
   }

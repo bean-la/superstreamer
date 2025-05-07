@@ -77,13 +77,14 @@ function getVideoOutputOptions(
     "-f mp4",
     "-an",
     // `-c:v ${stream.codec}`,
-    `-c:v h264_nvenc`,
-    `-b:v ${stream.bitrate}`,
+    `-c:v hevc_nvenc`,
+    `-crf 23`,
+    // `-b:v ${stream.bitrate}`,
     `-r ${stream.framerate}`,
     "-movflags +frag_keyframe",
     `-frag_duration ${segmentSize * 1_000_000}`,
-    // `-keyint_min ${keyFrameRate}`,
-    // `-g ${keyFrameRate}`,
+    `-keyint_min ${keyFrameRate}`,
+    `-g ${keyFrameRate}`,
   ];
 
   // if (stream.codec === "h264") {

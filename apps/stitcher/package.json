@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "type": "module",
   "scripts": {
-    "dev": "bun --watch --inspect=ws://localhost:6500/sprs-stitcher ./src/index.ts",
+    "dev": "bun --watch --inspect=ws://localhost:6500/sprs-stitcher ./src/index.ts --host",
     "dev:wrangler": "wrangler dev ./src/index.ts",
     "build": "bun build ./src/index.ts --target=bun --outdir=./dist",
     "deploy:wrangler": "npx wrangler deploy --minify ./src/index.ts",
